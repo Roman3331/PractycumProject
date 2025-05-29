@@ -173,7 +173,7 @@ function registerIpcHandlers() {
 
     ipcMain.handle('show-authors', async () => {
         return {
-            authors: 'Developed by xAI Team'
+            authors: 'Developed by Кузів Роман, Новоселецький Богдан, Паланій Орест'
         };
     });
 }
