@@ -17,12 +17,12 @@ function hideMessageInBmp(bmpData, message) {
     const height = bmpData.readUInt32LE(22);
     const pixelDataOffset = bmpData.readUInt32LE(10);
 
-    const messageBytes = Buffer.from(message + '\0', 'utf8'); // Add null terminator
+    const messageBytes = Buffer.from(message + '\0', 'utf8');
     const rowSize = width * 3;
     const padding = (4 - (rowSize % 4)) % 4;
 
     const totalPixelBytes = (rowSize + padding) * height;
-    const actualUsableBytes = totalPixelBytes - (padding * height); // Exclude padding bytes from usable space
+    const actualUsableBytes = totalPixelBytes - (padding * height);
 
     const availableBits = actualUsableBytes * 8;
     const requiredBits = messageBytes.length * 8;
@@ -41,7 +41,7 @@ function hideMessageInBmp(bmpData, message) {
             for (let color = 0; color < 3; color++) {
                 if (bitIndex < requiredBits) {
                     const byteInMessage = Math.floor(bitIndex / 8);
-                    const bitInByte = 7 - (bitIndex % 8); // Read from MSB
+                    const bitInByte = 7 - (bitIndex % 8);
                     const bitValue = (messageBytes[byteInMessage] >> bitInByte) & 1;
 
                     newBmp[currentBmpByteIndex] = (newBmp[currentBmpByteIndex] & 0xFE) | bitValue;
@@ -106,7 +106,7 @@ function extractMessageFromBmp(bmpData) {
         bitCount++;
 
         if (bitCount === 8) {
-            if (currentByte === 0) { // Null terminator found
+            if (currentByte === 0) {
                 break;
             }
             bytes.push(currentByte);
